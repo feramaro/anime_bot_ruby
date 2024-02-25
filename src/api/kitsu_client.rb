@@ -11,18 +11,10 @@ class KitsuClient
     response = @client.get("/trending/anime")
     json = JSON.parse(response)
     animes = json["data"]
-    anime_list = []
-    animes.each do |a|
-      anime = Anime.new(a["id"], a["attributes"]["titles"]["en"],
-                        a["attributes"]["synopsis"], a["attributes"]["description"],
-                        a["attributes"]["posterImage"]["large"])
-      anime_list.push anime
-    end
-    anime_list
+    anime_list = animes.map { |anime| Anime.new(anime) }
   end
 
   def get_anime_by_id(id)
     response = @client.get("/anime/#{id}")
   end
-
 end
